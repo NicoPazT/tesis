@@ -1,0 +1,10 @@
+# Ignorar configuraciones de VS Code
+.vscode/
+
+# Ignorar carpeta paramils
+paramils/
+
+# Archivos compilados y temporales
+*.o
+*.out
+*.swp
