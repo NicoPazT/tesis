@@ -58,6 +58,8 @@ void report_feasible (population *pop)
         {
             printf("%e\t",pop->ind[i].obj[0]);
             printf("%e\t",pop->ind[i].obj[1]);
+            /*printf("%.6f\t",pop->ind[i].obj[0]);
+            printf("%.6f\t",pop->ind[i].obj[1]/nbin);*/
             printf("\n");
 
         }

@@ -356,7 +356,8 @@ int main (int argc, char **argv)
         exit (1);
     }
     pmut_bin = atof (argv[6]);
-    if (pmut_bin<0.0 || pmut_bin>1.0){
+    /*if (pmut_bin<0.0 || pmut_bin>1.0){*/
+    if (pmut_bin<0.0){
         printf("\n Probability of mutation entered is : %e",pmut_bin);
         printf("\n Entered value of probability  of mutation of binary variables is out of bounds, hence exiting \n");
         exit (1);
