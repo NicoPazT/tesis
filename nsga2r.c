@@ -54,6 +54,8 @@ char *rm_comando2;
 int flag = 0;
 int base = 1;
 int *orden;
+float p_mut;
+double percent_ini;
 
 /*void guardar_info2_generacion(int generacion, population *pop, const char *instancia, float semilla) {
     char nombre_archivo[200];
@@ -255,8 +257,8 @@ int main (int argc, char **argv)
 {
     int i;
 
-    /*time_t inicio_total, fin_total;
-    time(&inicio_total);*/
+    time_t inicio_total, fin_total;
+    time(&inicio_total);
 
     /*struct problem_instance * pi;*/
     population *parent_pop;
@@ -267,11 +269,12 @@ int main (int argc, char **argv)
         printf("\n Usage ./nsga2r instance_route random_seed popsize ngen nobj pcross_bin pmut_bin\n./nsga2r 0.123 b-Instancia14_cap2_relacion7UnoUnoUnoTodosDistintos.dat 100 100 2 0.6 0.01\n");
         exit(1);
     }
-    base = atoi(argv[7]);
+    base = atoi(argv[8]);
     if (base != 0 && base != 1 && base != 2) {
         printf("Error: base debe ser 0 (aleatoria), 1 (chi-cuadrado) o 2 (híbrido)\n");
         exit(1);
     }
+    percent_ini = atof(argv[9]);
     seed = (double)atof(argv[1]);
     if (seed<=0.0 || seed>=1.0){
         printf("\n Entered seed value is wrong, seed value must be in (0,1) \n");
@@ -362,6 +365,11 @@ int main (int argc, char **argv)
         printf("\n Entered value of probability  of mutation of binary variables is out of bounds, hence exiting \n");
         exit (1);
     }
+    p_mut = atof(argv[7]);
+    if (p_mut < 0.0 || p_mut > 1.0) {
+    printf("\nValor inválido de p_mut: %f\nDebe estar entre 0 y 1.\n", p_mut);
+    exit(1);
+    }
 
     pmut_bin = pmut_bin * (1.0/nbin);
     /*printf("nbin: %d\n", nbin);*/
@@ -406,12 +414,12 @@ int main (int argc, char **argv)
         guardar_info2_generacion(i, parent_pop, instancia, seed);*/
     }
     /*printf("\n Generations finished, now reporting solutions");*/
-    /*printf("Training\n");
-    report_feasible(parent_pop);*/
+    printf("Training\n");
+    report_feasible(parent_pop);
     flag = 1;
     evaluate_pop(parent_pop);
     /*assign_rank_and_crowding_distance (parent_pop);*/
-    /*printf("Testing\n");*/
+    printf("Testing\n");
     report_feasible(parent_pop);
     if (nbin!=0)
     {
@@ -437,9 +445,9 @@ int main (int argc, char **argv)
     if (orden) free (orden);
 
     /*printf("\n Routine successfully exited \n");*/
-    /*time(&fin_total);
+    time(&fin_total);
     double total_execution_time = difftime(fin_total, inicio_total);
     printf("Total execution time: %.2f seconds\n", total_execution_time);
-    printf("Total execution time: %.2f minutes\n", total_execution_time / 60.0);*/
+    printf("Total execution time: %.2f minutes\n", total_execution_time / 60.0);
     return (0);
 }

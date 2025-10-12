@@ -112,6 +112,8 @@ extern char *test_csv;
 extern int flag;
 extern int base;
 extern int *orden;
+extern float p_mut;
+extern double percent_ini;
 
 void allocate_memory_pop (population *pop, int size);
 void allocate_memory_ind (individual *ind);
@@ -171,5 +173,7 @@ void q_sort_dist(population *pop, int *dist, int left, int right);
 
 void selection (population *old_pop, population *new_pop);
 individual* tournament (individual *ind1, individual *ind2);
+
+void bin_mutate_chi_ind(individual *ind);
 
 # endif

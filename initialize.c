@@ -74,7 +74,7 @@ void initialize_pop(population *pop) {
         }
         sprintf(nombre_archivo, "ini_%s_%.3f_%d.txt", instancia, semilla, base);
         sprintf(nombre_orden, "orden_%s_%.3f_%d.txt", instancia, semilla, base);
-        sprintf(command, "python3 chi2.py %s %s %s 0.5", train_csv, nombre_archivo, nombre_orden);
+        sprintf(command, "python3 chi2.py %s %s %s %.2f", train_csv, nombre_archivo, nombre_orden, percent_ini);
         int result = system(command);
         if (result != 0) {
             printf("Error al ejecutar el script Python para generar el archivo de inicialización.\n");
@@ -100,7 +100,7 @@ void initialize_pop(population *pop) {
         }
         sprintf(nombre_archivo, "ini_%s_%.3f_%d.txt", instancia, semilla, base);
         sprintf(nombre_orden, "orden_%s_%.3f_%d.txt", instancia, semilla, base);
-        sprintf(command, "python3 chi2.py %s %s %s 0.25", train_csv, nombre_archivo, nombre_orden); 
+        sprintf(command, "python3 chi2.py %s %s %s %.2f", train_csv, nombre_archivo, nombre_orden, percent_ini/2); 
         int result = system(command);
         if (result != 0) {
             printf("Error al ejecutar el script Python para generar el archivo de inicialización.\n");
@@ -139,7 +139,7 @@ void initialize_pop(population *pop) {
 /* Function to initialize an individual randomly */
 void initialize_ind (individual *ind, int i)
 {
-    float percent = 0.5;
+    float percent = 1 - percent_ini;
     int j, k;
     /*if (i == 0)
     {
@@ -232,7 +232,8 @@ void initialize_ind_chi_random(individual *ind, int* chi_ini) {
         }
     }
 
-    int num_random_features = (int)ceil(nbin * 0.25); 
+    double percent_ini_2 = percent_ini / 2;
+    int num_random_features = (int)ceil(nbin * percent_ini_2); 
 
     int random_count = 0;
     while (random_count < num_random_features) {
