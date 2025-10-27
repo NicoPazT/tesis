@@ -270,7 +270,7 @@ int main (int argc, char **argv)
         exit(1);
     }
     base = atoi(argv[8]);
-    if (base != 0 && base != 1 && base != 2) {
+    if (base != 0 && base != 1 && base != 2 && base != 3) {
         printf("Error: base debe ser 0 (aleatoria), 1 (chi-cuadrado) o 2 (híbrido)\n");
         exit(1);
     }
@@ -371,7 +371,6 @@ int main (int argc, char **argv)
     exit(1);
     }
 
-    pmut_bin = pmut_bin * (1.0/nbin);
     /*printf("nbin: %d\n", nbin);*/
 
     bitlength = 0;
@@ -398,6 +397,8 @@ int main (int argc, char **argv)
     /*decode_pop(parent_pop);*/
     evaluate_pop (parent_pop);
     assign_rank_and_crowding_distance (parent_pop);
+    pmut_bin = pmut_bin * (1.0/nbin);
+    /*printf("nbin2: %d\n", nbin);*/
     /*printf("Initial\n");
     report_feasible(parent_pop);*/
     /*guardar_info_generacion(1, parent_pop, instancia, seed);

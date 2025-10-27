@@ -119,6 +119,61 @@ void initialize_pop(population *pop) {
         char rm_command[128];
         sprintf(rm_command, "rm %s %s", nombre_archivo, nombre_orden);
         system(rm_command);
+    } else if (base == 3) {
+    char command[256];
+    char nombre_orden[128];
+
+    if (instancia == NULL) {
+        printf("ERROR: 'instancia' es NULL\n");
+        exit(1);
+    }
+
+    sprintf(nombre_orden, "orden_%s_%.3f_%d.txt", instancia, semilla, base);
+    sprintf(command, "python3 chi2_nuevo.py %s %s %.2f", train_csv, nombre_orden, percent_ini);
+    int result = system(command);
+    if (result != 0) {
+        printf("Error al ejecutar el script Python (base 3).\n");
+        exit(1);
+    }
+
+    FILE* file = fopen(nombre_orden, "r");
+    if (!file) {
+        printf("Error al abrir el archivo: %s\n", nombre_orden);
+        exit(1);
+    }
+
+    int* orden_local = (int*)malloc(nbin * sizeof(int));
+    if (!orden_local) {
+        printf("Error: malloc falló al asignar memoria para orden_local (%d enteros)\n", nbin);
+        exit(1);
+    }
+
+    int count = 0;
+    while (fscanf(file, "%d", &orden_local[count]) == 1) {
+        orden_local[count]--;
+        count++;
+    }
+    fclose(file);
+
+    if (count == 0) {
+        printf("Error: archivo %s vacío o sin índices válidos\n", nombre_orden);
+        exit(1);
+    }
+
+    nbin = count;
+    printf("nbin: %d\n", nbin);
+    orden = orden_local; 
+
+    int i;
+    for (i = 0; i < popsize; i++) {
+        initialize_ind_order(&(pop->ind[i]), orden);
+    }
+
+    char rm_command[128];
+    sprintf(rm_command, "rm %s", nombre_orden);
+    system(rm_command);
+
+    /*printf("Inicialización base=3 completada correctamente (count=%d, percent_ini=%.2f)\n", count, percent_ini);*/
     }
     /*int suma_total_caracteristicas = 0;
     int j;
@@ -247,4 +302,23 @@ void initialize_ind_chi_random(individual *ind, int* chi_ini) {
 
     free(selected_by_chi); 
     return;
+}
+
+void initialize_ind_order(individual *ind, int *orden)
+{
+    float percent = 1 - percent_ini;
+    int j;
+
+    for (j = 0; j < nbin; j++) {
+        ind->xbin[j] = 0.0;
+    }
+
+    for (j = 0; j < nbin; j++) {
+        int z = orden[j];
+        if (z >= 0 && z < nbin) {
+            if (randomperc() > percent) {
+                ind->xbin[z] = 1.0;
+            }
+        }
+    }
 }

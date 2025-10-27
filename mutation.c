@@ -26,12 +26,13 @@ void mutation_ind (individual *ind)
         real_mutate_ind(ind);
     }
     if (nbin != 0) {
-        if (randomperc() <= p_mut)
-        {    
+        if (base == 3) {
+            bin_mutate_ind_nuevo(ind); 
+        }
+        else if (randomperc() <= p_mut) {    
             bin_mutate_chi_ind(ind);
         }
-        else
-        {
+        else {
             bin_mutate_ind(ind);
         }
     }
@@ -88,6 +89,24 @@ void bin_mutate_chi_ind(individual *ind)
             nbinmut++;
         }
     }
+    return;
+}
+
+void bin_mutate_ind_nuevo(individual *ind)
+{
+    int j;
+
+    for (j = 0; j < nbin; j++) {
+        int pos = orden[j]; 
+
+        if (pos >= 0 && pos < nbin) {
+            if (randomperc() <= pmut_bin) {
+                ind->xbin[pos] = (ind->xbin[pos] == 1.0) ? 0.0 : 1.0;
+                nbinmut++;
+            }
+        }
+    }
+
     return;
 }
 
