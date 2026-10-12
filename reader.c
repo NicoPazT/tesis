@@ -104,37 +104,6 @@ void readCTrucks(FILE *f, problem_instance *pi) {
         pi->trucks[id].capacity = capacity;
 }
 
-/*void readDepots(FILE *f, problem_instance *pi) {
-    int debug=0, id=0;
-    char *token;
-
-    char line[1024];
-    fgets(line, sizeof(line), f);
-
-    if (debug) printf("Line: %s\n", line);
-    removeSemicolon(line);
-    if (debug) printf("Line: %s\n", line);
-    pi->nDepots=countWords(line);
-
-    pi->depots=malloc(pi->nDepots*sizeof(depot));
-
-    if (debug) printf("nDepots: %d\n", pi->nDepots);
-
-    token=strtok(line, " ");
-    while( token != NULL ) {
-        if (debug) printf("%s\n", token);
-        pi->depots[id].id=id;
-        pi->depots[id].names[0] = atoi(token);
-        token=strtok(NULL, " ");
-        id++;
-    }
-    if (debug) {
-        for ( id=0; id<pi->nDepots; id++ )
-            printf ("%d, %ld\n", pi->depots[id].id, pi->depots[id].names[0]);
-    }
-    if (debug) getchar();
-} */
-
 void readAlternativeNames(FILE *f, problem_instance *pi, int index) {
     int debug=0, id=0;
     char *token;
@@ -331,67 +300,4 @@ void readTrucksDepots(FILE *f, problem_instance *pi, char * type) {
         }
     }
 }
-
-
-/*int readInputFile(char* filePath, problem_instance *pi) {
-    int debug=0;
-    FILE* fh=fopen(filePath, "r");
-
-    if ( fh==NULL ){
-        printf("File does not exists %s", filePath);
-        return 0;
-    }
-
-    if(debug) printf("Reading: %s \n", filePath);
-
-    findDef(fh, "D_start:=");
-    readDepots(fh, pi);
-    if(debug) printf("End readDepots! \n");
-
-    findDef(fh, "C:=");
-    readClients(fh, pi);
-    if(debug) printf("End readClients! \n");
-
-    findDef(fh, "D_in:=");
-    readAlternativeNames(fh, pi, 1);
-
-    findDef(fh, "D_end:=");
-    readAlternativeNames(fh, pi, 2);
-    if(debug) printf("End readNames! \n");
-
-    findDef(fh, "K:=");
-    readTrucks(fh, pi);
-    if(debug) printf("End readTrucks! \n ");
-
-    findDef(fh, "time_:=");
-    readDistances(fh, pi);
-    if(debug) printf("End readDistances!\n ");
-
-    findDef(fh, "dem:=");
-    readDemands(fh, pi);
-    if(debug) printf("End readDemands! \n");
-
-    findDef(fh, "cap:=");
-    readCTrucks(fh, pi);
-    if(debug) printf("End readCTrucks! \n");
-
-    findDef(fh, "ava_start:=");
-    readTrucksDepots(fh, pi, "start");
-
-    findDef(fh, "ava_end:=");
-    readTrucksDepots(fh, pi, "end");
-
-    findDef(fh, "com:=");
-    readTrucksDepots(fh, pi, "in");
-    if(debug) printf("End readTrucksDepots! \n");
-
-    fclose(fh);
-    if(debug) printf("End Reading! \n");
-
-    printProblemInstance(pi);
-    if(debug) getchar();
-
-    return 0;
-}*/
-
 

@@ -57,89 +57,6 @@ int *orden;
 float p_mut;
 double percent_ini;
 
-/*void guardar_info2_generacion(int generacion, population *pop, const char *instancia, float semilla) {
-    char nombre_archivo[200];
-    snprintf(nombre_archivo, sizeof(nombre_archivo), "info2/info2_%s_%.3f.txt", instancia, semilla);
-
-    FILE *archivo = fopen(nombre_archivo, generacion == 1 ? "w" : "a");
-    if (!archivo) {
-        fprintf(stderr, "Error al abrir %s para escritura\n", nombre_archivo);
-        return;
-    }
-
-    int *contador = (int *)calloc(nbin, sizeof(int));
-    int i,j;
-
-    for (i = 0; i < popsize; i++) {
-        for (j = 0; j < nbin; j++) {
-            if (pop->ind[i].xbin[j] == 1) {
-                contador[j]++;
-            }
-        }
-    }
-
-    fprintf(archivo, "Generación %d\n", generacion);
-
-    fprintf(archivo, "Presentes en todos: ");
-    for (j = 0; j < nbin; j++) {
-        if (contador[j] == popsize) {
-            fprintf(archivo, "%d ", j);
-        }
-    }
-    fprintf(archivo, "\n");
-
-    fprintf(archivo, "Ausentes en todos: ");
-    for (j = 0; j < nbin; j++) {
-        if (contador[j] == 0) {
-            fprintf(archivo, "%d ", j);
-        }
-    }
-    fprintf(archivo, "\n\n");
-
-    free(contador);
-    fclose(archivo);
-}
-
-void guardar_info_generacion(int generacion, population *pop, const char *instancia, float semilla) {
-    char nombre_archivo[200];
-    snprintf(nombre_archivo, sizeof(nombre_archivo), "info/info_%s_%.3f.txt", instancia, semilla);
-
-    FILE *archivo = fopen(nombre_archivo, generacion == 1 ? "w" : "a");
-    if (!archivo) {
-        fprintf(stderr, "Error al abrir %s para escritura\n", nombre_archivo);
-        return;
-    }
-
-    double suma_error = 0.0, suma_characts = 0.0;
-    double min_error = 1.0, max_error = 0.0;
-    int min_characts = INT_MAX, max_characts = 0;
-
-    int i;
-    for (i = 0; i < popsize; i++) {
-        double error = pop->ind[i].obj[0];
-        int n_feat = (int) pop->ind[i].obj[1];
-
-        suma_error += error;
-        suma_characts += n_feat;
-
-        if (error < min_error) min_error = error;
-        if (error > max_error) max_error = error;
-
-        if (n_feat < min_characts) min_characts = n_feat;
-        if (n_feat > max_characts) max_characts = n_feat;
-    }
-
-    double prom_error = suma_error / popsize;
-    double prom_characts = suma_characts / popsize;
-
-    fprintf(archivo,
-        "Gen %d\tError: min=%.4f max=%.4f avg=%.4f\tCharacts: min=%d max=%d avg=%.2f\n",
-        generacion, min_error, max_error, prom_error,
-        min_characts, max_characts, prom_characts);
-
-    fclose(archivo);
-}*/
-
 void obtener_nombre_sin_extension(const char *path_completo, char *nombre_sin_ext) {
     const char *base = strrchr(path_completo, '/');
     if (!base) base = path_completo;
@@ -149,38 +66,6 @@ void obtener_nombre_sin_extension(const char *path_completo, char *nombre_sin_ex
     char *punto = strrchr(nombre_sin_ext, '.');
     if (punto) *punto = '\0';
 }
-
-/*void generar_archivos_train_test(const char *ruta_csv, double semilla, int base) {
-    char nombre_instancia[100];
-    obtener_nombre_sin_extension(ruta_csv, nombre_instancia);
-
-    char nombre_train[200], nombre_test[200];
-    snprintf(nombre_train, sizeof(nombre_train), "%s_%.3f_train_%d.csv", nombre_instancia, semilla, base);
-    snprintf(nombre_test, sizeof(nombre_test), "%s_%.3f_test_%d.csv", nombre_instancia, semilla, base);
-
-    char comando[8192];
-    snprintf(comando, sizeof(comando),
-        "awk -v seed=%f '"
-        "BEGIN{srand(seed)} "
-        "NR==1{header=$0; next} "
-        "{line[NR]=$0} "
-        "END{ "
-        "   n=NR-1; "
-        "   n_train=int(n*0.8); "
-        "   for(i=2;i<=NR;i++){ "
-        "       j=2+int(rand()*(NR-1)); "
-        "       tmp=line[i]; line[i]=line[j]; line[j]=tmp; "
-        "   } "
-        "   print header > \"%s\"; "
-        "   print header > \"%s\"; "
-        "   for(i=2;i<=n_train+1;i++) print line[i] >> \"%s\"; "
-        "   for(i=n_train+2;i<=NR;i++) print line[i] >> \"%s\"; "
-        "}' %s",
-        semilla, nombre_train, nombre_test, nombre_train, nombre_test, ruta_csv
-    );
-
-    system(comando);
-}*/
 
 void generar_archivos_train_test(const char *ruta_csv, double semilla, int base) {
     char nombre_instancia[100];
@@ -229,30 +114,6 @@ void generar_archivos_train_test(const char *ruta_csv, double semilla, int base)
     }
 }
 
-/*void generar_archivos_train_test(const char *ruta_csv, double semilla, int base) {
-    char nombre_instancia[100];
-    obtener_nombre_sin_extension(ruta_csv, nombre_instancia);
-
-    char semilla_str[50];
-    snprintf(semilla_str, sizeof(semilla_str), "%.3f", semilla);
-
-    char comando[2048];
-    snprintf(comando, sizeof(comando),
-        "awk -F, '"
-        "BEGIN {srand()} "
-        "NR==1 {print > \"%s_%s_train_%d.csv\"; print > \"%s_%s_test_%d.csv\"; next} "
-        "{if (rand() <= 0.8) print > \"%s_%s_train_%d.csv\"; "
-        "else print > \"%s_%s_test_%d.csv\"}' "
-        "%s",
-        nombre_instancia, semilla_str, base,
-        nombre_instancia, semilla_str, base,
-        nombre_instancia, semilla_str, base,
-        nombre_instancia, semilla_str, base,
-        ruta_csv
-    );
-    system(comando);
-}*/
-
 int main (int argc, char **argv)
 {
     int i;
@@ -260,7 +121,6 @@ int main (int argc, char **argv)
     time_t inicio_total, fin_total;
     time(&inicio_total);
 
-    /*struct problem_instance * pi;*/
     population *parent_pop;
     population *child_pop;
     population *mixed_pop;
@@ -334,12 +194,6 @@ int main (int argc, char **argv)
         printf("\n Wrong nuber of generations entered, hence exiting \n");
         exit (1);
     }
-    /*nobj = atoi(argv[5]);
-    if (nobj<1){
-        printf("\n number of objectives entered is : %d",nobj);
-        printf("\n Wrong number of objectives entered, hence exiting \n");
-        exit (1);
-    }*/
     nobj = 2;
 
     nbits = (int *)malloc(nbin * sizeof(int));
@@ -359,7 +213,6 @@ int main (int argc, char **argv)
         exit (1);
     }
     pmut_bin = atof (argv[6]);
-    /*if (pmut_bin<0.0 || pmut_bin>1.0){*/
     if (pmut_bin<0.0){
         printf("\n Probability of mutation entered is : %e",pmut_bin);
         printf("\n Entered value of probability  of mutation of binary variables is out of bounds, hence exiting \n");
@@ -370,8 +223,6 @@ int main (int argc, char **argv)
     printf("\nValor inválido de p_mut: %f\nDebe estar entre 0 y 1.\n", p_mut);
     exit(1);
     }
-
-    /*printf("nbin: %d\n", nbin);*/
 
     bitlength = 0;
     if (nbin!=0)
@@ -393,33 +244,21 @@ int main (int argc, char **argv)
     allocate_memory_pop (mixed_pop, 2*popsize);
     randomize();
     initialize_pop (parent_pop);
-    /*printf("\n Initialization done, now performing first generation\n");*/
-    /*decode_pop(parent_pop);*/
     evaluate_pop (parent_pop);
     assign_rank_and_crowding_distance (parent_pop);
     pmut_bin = pmut_bin * (1.0/nbin);
-    /*printf("nbin2: %d\n", nbin);*/
-    /*printf("Initial\n");
-    report_feasible(parent_pop);*/
-    /*guardar_info_generacion(1, parent_pop, instancia, seed);
-    guardar_info2_generacion(1, parent_pop, instancia, seed);*/
     for (i=2; i<=ngen; i++)
     {
         selection (parent_pop, child_pop);
         mutation_pop (child_pop);
-        /*decode_pop(child_pop);*/
         evaluate_pop(child_pop);
         merge (parent_pop, child_pop, mixed_pop);
         fill_nondominated_sort (mixed_pop, parent_pop);
-        /*guardar_info_generacion(i, parent_pop, instancia, seed);
-        guardar_info2_generacion(i, parent_pop, instancia, seed);*/
     }
-    /*printf("\n Generations finished, now reporting solutions");*/
     printf("Training\n");
     report_feasible(parent_pop);
     flag = 1;
     evaluate_pop(parent_pop);
-    /*assign_rank_and_crowding_distance (parent_pop);*/
     printf("Testing\n");
     report_feasible(parent_pop);
     if (nbin!=0)
@@ -445,7 +284,6 @@ int main (int argc, char **argv)
     if (rm_comando2) free (rm_comando2);
     if (orden) free (orden);
 
-    /*printf("\n Routine successfully exited \n");*/
     time(&fin_total);
     double total_execution_time = difftime(fin_total, inicio_total);
     printf("Total execution time: %.2f seconds\n", total_execution_time);

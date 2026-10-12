@@ -39,32 +39,6 @@ void mutation_ind (individual *ind)
     return;
 }
 
-/* Routine for binary mutation of an individual */
-/*void bin_mutate_ind (individual *ind)
-{
-    int j, k;
-    double prob;
-    for (j=0; j<nbin; j++)
-    {
-        for (k=0; k<nbits[j]; k++)
-        {
-            prob = randomperc();
-            if (prob <=pmut_bin)
-            {
-                if (ind->gene[j][k] == 0)
-                {
-                    ind->gene[j][k] = 1;
-                }
-                else
-                {
-                    ind->gene[j][k] = 0;
-                }
-                nbinmut+=1;
-            }
-        }
-    }
-    return;
-}*/
 void bin_mutate_ind(individual *ind)
 {
     int j;

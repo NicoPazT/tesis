@@ -125,7 +125,6 @@ double ejecutar_script_R(int seed, int *num_variables, individual *ind) {
         ind->characts = NULL;
     }
 
-    /*snprintf(comando, sizeof(comando), "Rscript script3.R %s %d > %s\n", nuevo_nombre, seed, script_nombre);*/
     snprintf(comando, sizeof(comando), "Rscript script2.R %s.csv %d > %s\n", nuevo_nombre, seed, script_nombre);
 
     clock_t inicio = clock();
@@ -136,22 +135,7 @@ double ejecutar_script_R(int seed, int *num_variables, individual *ind) {
     FILE *file = fopen(script_nombre, "r");
     fscanf(file, "%lf %d", &acc, num_variables);
 
-    /*ind->characts = (int *)malloc(*num_variables * sizeof(int));
-
-    for (i = 0; i < *num_variables; i++) {
-        fscanf(file, "%d", &(ind->characts[i]));
-    }*/
-    /*printf("Número de variables: %d\n", *num_variables);*/
-
     fclose(file);
-
-    /*printf("Características utilizadas:\n");
-    for (i = 0; i < *num_variables; i++) {
-        printf("%d ", ind->characts[i]);
-    }
-    printf("\n");
-
-    printf("Tiempo de ejecución de Rscript: %f segundos\n", tiempo_transcurrido);*/
 
     return acc;
 }
@@ -200,7 +184,6 @@ void evaluate_ind (individual *ind)
         }
         system(comando);
         int num_variables;
-        /*double acc = ejecutar_script_R(100, &num_variables, ind);*/
         double err = ejecutar_script_R(100, &num_variables, ind);
         
         if (err != -1) {
@@ -210,10 +193,6 @@ void evaluate_ind (individual *ind)
             ind->obj[0] = 1.0;
             ind->obj[1] = 100000;
         }
-
-        /*if (flag == 1) {
-            getchar();
-        }*/
 
         free(lista_binaria);
 

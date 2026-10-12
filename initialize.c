@@ -173,21 +173,7 @@ void initialize_pop(population *pop) {
     sprintf(rm_command, "rm %s", nombre_orden);
     system(rm_command);
 
-    /*printf("Inicialización base=3 completada correctamente (count=%d, percent_ini=%.2f)\n", count, percent_ini);*/
     }
-    /*int suma_total_caracteristicas = 0;
-    int j;
-    for (i = 0; i < popsize; i++) {
-        int contador = 0;
-        for (j = 0; j < nbin; j++) {
-            if (pop->ind[i].xbin[j] == 1.0) {
-                contador++;
-            }
-        }
-        suma_total_caracteristicas += contador;
-    }
-    float promedio_caracteristicas = (float)suma_total_caracteristicas / popsize;
-    printf("Promedio de características seleccionadas en la población inicial: %.2f\n", promedio_caracteristicas);*/
     return;
 }
 
@@ -196,10 +182,6 @@ void initialize_ind (individual *ind, int i)
 {
     float percent = 1 - percent_ini;
     int j, k;
-    /*if (i == 0)
-    {
-        percent = 0.0;
-    }*/
     if (nreal!=0)
     {
         for (j=0; j<nreal; j++)
@@ -209,21 +191,6 @@ void initialize_ind (individual *ind, int i)
     }
     if (nbin!=0)
     {
-        /*ind->characts = NULL;*/
-        /*for (j=0; j<nbin; j++)
-        {
-            for (k=0; k<nbits[j]; k++)
-            {
-                if (randomperc() <= percent)
-                {
-                    ind->gene[j][k] = 0;
-                }
-                else
-                {
-                    ind->gene[j][k] = 1;
-                }
-            }
-        }*/
         for (j = 0; j < nbin; j++) {
             ind->xbin[j] = (randomperc() <= percent) ? 0.0 : 1.0;
         }

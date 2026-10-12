@@ -41,10 +41,6 @@ void copy_ind (individual *ind1, individual *ind2)
         for (i=0; i<nbin; i++)
         {
             ind2->xbin[i] = ind1->xbin[i];
-            /*for (j=0; j<nbits[i]; j++)
-            {
-                ind2->gene[i][j] = ind1->gene[i][j];
-            }*/
         }
     }
     for (i=0; i<nobj; i++)

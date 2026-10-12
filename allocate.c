@@ -30,12 +30,6 @@ void allocate_memory_ind (individual *ind)
     if (nbin != 0)
     {
         ind->xbin = (double *)malloc(nbin*sizeof(double));
-        /*ind->gene = (int **)malloc(nbin*sizeof(int *));
-        for (j=0; j<nbin; j++)
-        {
-            ind->gene[j] = (int *)malloc(nbits[j]*sizeof(int));
-        }*/
-        /*ind->xbin_red = (double *)malloc(nbin*sizeof(double));*/
     }
     ind->obj = (double *)malloc(nobj*sizeof(double));
     if (ncon != 0)
@@ -69,14 +63,7 @@ void deallocate_memory_ind (individual *ind)
     }
     if (nbin != 0)
     {
-        /*for (j=0; j<nbin; j++)
-        {
-            free(ind->gene[j]);
-        }*/
         free(ind->xbin);
-        /*free(ind->gene);*/
-        /*free(ind->xbin_red);
-        free(ind->characts);*/
     }
     free(ind->obj);
     if (ncon != 0)
