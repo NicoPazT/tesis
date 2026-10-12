@@ -39,37 +39,6 @@ typedef struct lists
 }
 list;
 
-typedef struct
-{
-    int id;
-    long int names[3];
-}depot;
-
-typedef struct
-{
-    int id, name, demand;
-}client;
-
-typedef struct
-{
-    int id, capacity;
-    int *dStart;
-    int *dEnd;
-    int *dIn;
-    int ndStart, ndEnd, ndIn;
-}truck;
-
-
-typedef struct
-{
-    int **distances;
-
-    depot *depots;
-    client *clients;
-    truck *trucks;
-    int nDepots, nClients, nTrucks;
-}problem_instance;
-
 extern int nreal;
 extern int nbin;
 extern int nobj;
