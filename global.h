@@ -120,9 +120,6 @@ void allocate_memory_ind (individual *ind);
 void deallocate_memory_pop (population *pop, int size);
 void deallocate_memory_ind (individual *ind);
 
-double maximum (double a, double b);
-double minimum (double a, double b);
-
 void crossover (individual *parent1, individual *parent2, individual *child1, individual *child2);
 void realcross (individual *parent1, individual *parent2, individual *child1, individual *child2);
 void bincross (individual *parent1, individual *parent2, individual *child1, individual *child2);
@@ -130,11 +127,6 @@ void bincross (individual *parent1, individual *parent2, individual *child1, ind
 void assign_crowding_distance_list (population *pop, list *lst, int front_size);
 void assign_crowding_distance_indices (population *pop, int c1, int c2);
 void assign_crowding_distance (population *pop, int *dist, int **obj_array, int front_size);
-
-void decode_pop (population *pop);
-void decode_ind (individual *ind);
-
-void onthefly_display (population *pop, FILE *gp, int ii);
 
 int check_dominance (individual *a, individual *b);
 
